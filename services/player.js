@@ -21,8 +21,7 @@ module.exports = {
       }).catch(err => {
         console.log(err);
       });
-  },
-
+  }
 };
 
 function getPlayerIDs(...players) {
