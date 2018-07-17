@@ -1,5 +1,6 @@
 'use strict';
 const api = require('./api');
+const CURR_SEASON = 8;
 
 module.exports = {
   getPlayerIDs(...players) {
@@ -10,7 +11,11 @@ module.exports = {
   getTeamInfo(...players) {
     return this.getPlayerIDs(players)
       .then(ids => {
-        return ids;
+        const params = { 'tag[season]': CURR_SEASON, 'tag[playerIds]': ids.join() };
+        return api.get('/teams', {params});
+      })
+      .then(res => {
+        return res.data.data;
       }).catch(err => {
         console.log(err);
       });

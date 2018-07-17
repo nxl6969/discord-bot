@@ -23,8 +23,8 @@ client.on('message', message => {
 
   if (command === 'info') {
     playerService.getTeamInfo(args[0], args[1])
-      .then(ids => {
-        console.log(ids);
+      .then(info => {
+        console.log(info);
       })
       .catch(err => {
         console.log(err);
