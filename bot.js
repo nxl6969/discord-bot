@@ -25,6 +25,7 @@ client.on('message', message => {
     playerService.getTeamInfo(args[0], args[1])
       .then(info => {
         console.log(info);
+        message.channel.send(info);
       })
       .catch(err => {
         console.log(err);
