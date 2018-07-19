@@ -4,16 +4,11 @@ const round = require('lodash.round');
 //  Doesn't work without /lib/stripIndents
 const stripIndents = require('common-tags/lib/stripIndents');
 const CURR_SEASON = 8;
+let idArr = [];
 
 module.exports = {
-  getTeamInfo(...players) {
-    let idArr = [];
-    return getPlayerIDs(players)
-      .then(ids => {
-        idArr = ids;
-        const params = { 'tag[season]': CURR_SEASON, 'tag[playerIds]': ids.join() };
-        return api.get('/teams', { params });
-      })
+  getTeamInfo: function (...players) {
+    return getTeam(players)
       .then(res => {
         return formatTeamData(res.data.data.find((obj) => {
           return idArr.every(ele => obj.attributes.stats.members.includes(ele));
@@ -30,6 +25,15 @@ function getPlayerIDs(...players) {
     .then(res => res.data.data.map(player => player.id));
 }
 
+function getTeam(...players) {
+  return getPlayerIDs(players)
+    .then(ids => {
+      idArr = ids;
+      const params = { 'tag[season]': CURR_SEASON, 'tag[playerIds]': ids.join() };
+      return api.get('/teams', { params });
+    });
+}
+
 function formatTeamData(teamData) {
   return stripIndents`
     Team Name: ${teamData.name}
@@ -42,14 +46,14 @@ function formatTeamData(teamData) {
 }
 
 function formatLeague(league) {
-  switch (league) {
-    case 6: return 'Grand Champion';
-    case 5: return 'Champion';
-    case 4: return 'Diamond';
-    case 3: return 'Platinum';
-    case 2: return 'Gold';
-    case 1: return 'Silver';
-    case 0: return 'Bronze';
-    default: return 'None';
-  }
+  return {
+    '0': 'Bronze',
+    '1': 'Silver',
+    '2': 'Gold',
+    '3': 'Platinum',
+    '4': 'Diamond',
+    '5': 'Champion',
+    '6': 'Grand Champion',
+    'default': 'None'
+  }[league || 'default'];
 }
