@@ -1,36 +1,38 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
+'use strict';
+
+const { Client } = require('discord.js');
 const config = require('./config.json');
 const playerService = require('./services/player.js');
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-});
+const isCommandInvocation = msg => msg.startsWith(config.prefix);
+const client = new Client();
+const actions = {
+  ping: () => 'pong',
+  info: (...args) => playerService.getTeamInfo(...args),
+  help: () => '~*~List of Commands~*~\n!info *name1,name2...* (Lists team info' +
+  ' for the listed team members)'
+};
 
 client.on('message', message => {
-  if (message.content.indexOf(config.prefix) !== 0) return;
-
-  const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-  const command = args.shift().toLowerCase();
-
-  if (command === 'terminate') {
-    client.destroy();
-  }
-
-  if (command === 'ping') {
-    message.channel.send('pong');
-  }
-
-  if (command === 'info') {
-    playerService.getTeamInfo(args[0], args[1])
-      .then(info => {
-        console.log(info);
-        message.channel.send(info);
-      })
+  if (!isCommandInvocation(message.content)) return;
+  const { args, command } = parseMessage(message);
+  const action = actions[command];
+  if (!action) {
+    message.channel.send('No such command. Try !help');
+  } else {
+    return Promise.resolve(action(...args))
+      .then(result => message.channel.send(result))
       .catch(err => {
-        console.log(err);
+        console.error(err);
+        message.channel.send('Oops! Something went wrong :(');
       });
   }
 });
+
+function parseMessage(message) {
+  const args = message.content.slice(config.prefix.length).trim().split(/\s+/g);
+  const command = args.shift().toLowerCase();
+  return { args, command };
+}
 
 client.login(config.token);
