@@ -8,7 +8,10 @@ const CURR_SEASON = 8;
 
 module.exports = {
   getTeamInfo: function (...players) {
-    const idPromise = getPlayerIDs(...players);
+    if (!players || players.length < 2) {
+      return Promise.resolve('Invalid arguments provided. Try !help');
+    }
+    const idPromise = getPlayerIDs(players);
     const teamPromise = idPromise.then(ids => getTeam(ids));
     return Promise.all([idPromise, teamPromise]).then(([ids, team]) => {
       return formatTeamData(team.data.data.find((obj) => {
