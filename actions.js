@@ -1,6 +1,6 @@
 'use strict';
 
-const playerService = require('./services/player.js');
+const client = require('./services/Client.js');
 const stripIndents = require('common-tags/lib/stripIndents');
 
 module.exports = {
@@ -32,5 +32,5 @@ function info(message, args) {
   if (!args || args.length < 2) {
     return 'Invalid arguments provided. Try !help';
   }
-  return playerService.getTeamInfo(args);
+  return client.getTeamInfo(args);
 }
