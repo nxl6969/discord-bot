@@ -1,3 +1,5 @@
+'use strict';
+
 const playerService = require('./services/player.js');
 const stripIndents = require('common-tags/lib/stripIndents');
 
