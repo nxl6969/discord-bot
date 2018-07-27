@@ -11,16 +11,13 @@ client.on('message', message => {
   if (!isCommandInvocation(message.content)) return;
   const { args, command } = parseMessage(message);
   const action = actions[command];
-  if (!action) {
-    message.channel.send('No such command. Try !help');
-  } else {
-    return Promise.resolve(action(message, ...args))
-      .then(result => message.channel.send(result))
-      .catch(err => {
-        console.error(err);
-        message.channel.send('Oops! Something went wrong :(');
-      });
-  }
+  if (!action) return message.channel.send('No such command. Try !help');
+  return Promise.resolve(action(message, args))
+    .then(result => message.channel.send(result))
+    .catch(err => {
+      console.error(err);
+      message.channel.send('Oops! Something went wrong :(');
+    });
 });
 
 function parseMessage(message) {
