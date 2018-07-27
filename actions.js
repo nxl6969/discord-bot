@@ -15,7 +15,7 @@ function purge(message, count) {
   }
   return message.channel.fetchMessages({ limit: (deleteCount + 1) })
     .then(fetched => message.channel.bulkDelete(fetched))
-    .then(() => 'Successfully purged ' + count + ' messages.');
+    .then(() => `Successfully purged ${count} messages.`);
 }
 
 function help() {

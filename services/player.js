@@ -30,7 +30,8 @@ function getTeam(ids) {
 }
 
 function formatTeamData(teamData) {
-  const winRate = round((teamData.stats.wins / (teamData.stats.losses + teamData.stats.wins) * 100), 2);
+  const winRate = round((teamData.stats.wins /
+    (teamData.stats.losses + teamData.stats.wins) * 100), 2);
   return stripIndents`
     Team Name: ${teamData.name}
     Rank: ${formatLeague(teamData.stats.league)} League | Division ${teamData.stats.division}
