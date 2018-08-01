@@ -2,6 +2,7 @@
 
 const client = require('../services/Client');
 const stripIndents = require('common-tags/lib/stripIndents');
+const format = require('./format');
 
 module.exports = {
   ping: () => 'pong',
@@ -29,8 +30,11 @@ function help() {
 }
 
 function info(message, args) {
-  if (!args || args.length < 2) {
-    return 'Invalid arguments provided. Try !help';
-  }
-  return client.getTeamInfo(args);
+  if (!args || args.length < 2) return 'Invalid arguments provided. Try !help';
+  return client.getTeamInfo(args)
+    .then(data => (
+      (data.stats.members.length < 2)
+        ? 'No team found.'
+        : format(data)
+    ));
 }
