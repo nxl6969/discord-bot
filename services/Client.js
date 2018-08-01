@@ -1,16 +1,12 @@
 'use strict';
 
-const axios = require('axios');
+const { Axios } = require('axios');
 const key = require('../config.json').battleriteAPIKey;
 const stripIndents = require('common-tags/lib/stripIndents');
 const CURR_SEASON = 8;
 const round = require('lodash/round');
 
-class MyClient {
-  constructor(options) {
-    Object.assign(this, axios.create(options));
-  }
-
+class MyClient extends Axios {
   getPlayerIDs(players) {
     const params = { 'filter[playerNames]': players.join() };
     return this.get('/players', { params })
