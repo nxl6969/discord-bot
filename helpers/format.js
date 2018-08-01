@@ -1,3 +1,5 @@
+'use strict';
+
 const stripIndents = require('common-tags/lib/stripIndents');
 const round = require('lodash/round');
 

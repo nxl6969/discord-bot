@@ -2,6 +2,7 @@
 
 const { Axios } = require('axios');
 const key = require('../config.json').battleriteAPIKey;
+
 const CURR_SEASON = 8;
 const defaults = {
   baseURL: 'https://api.developer.battlerite.com/shards/global/',
