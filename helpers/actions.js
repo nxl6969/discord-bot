@@ -1,6 +1,6 @@
 'use strict';
 
-const client = require('./services/Client.js');
+const client = require('../services/Client');
 const stripIndents = require('common-tags/lib/stripIndents');
 
 module.exports = {
