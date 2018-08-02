@@ -32,7 +32,8 @@ function help() {
 function info(message, args) {
   if (!args || args.length < 2) return 'Invalid arguments provided. Try !help';
   return client.getTeamInfo(args)
-    .then(data =>
-      (data.stats.members.length < 2) ? 'No team found.' : format(data)
-    );
+    .then(data => {
+      if (data.stats.members.length < 2) return 'No team found.';
+      return format(data);
+    });
 }
