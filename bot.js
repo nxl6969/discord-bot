@@ -2,7 +2,7 @@
 
 const { Client } = require('discord.js');
 const config = require('./config.json');
-const actions = require('./actions');
+const actions = require('./helpers/actions');
 
 const isCommandInvocation = msg => msg.startsWith(config.prefix);
 const client = new Client();
